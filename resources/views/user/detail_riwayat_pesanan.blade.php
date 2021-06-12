@@ -110,10 +110,9 @@
               <div id="collapseThree" class="collapse show" aria-labelledby="headingThree" data-bs-parent="#accordion">
                 <div class="card-body">
                     <ol>
-                        <li>Pembayaran dilakukan secara langsung ketika pedagang datang ke lokasi Anda</li>
-                        <li>Total pembayaran sesuai dengan yang tertera pada aplikasi</li>
-                        <li>Tunjukkan pesan ini untuk ketika membayar ke pedagang</li>
-                        <li>Apabila Anda melakukan order fiktif, maka nomor Anda akan diblokir dari aplikasi Mangkok</li>
+                        <li>Cocokkan kode transaksi antara pembeli dan yang tertera di atas</li>
+                        <li>Terima pembayaran dari pembeli</li>
+                        <li>Apabila pembeli melakukan order fiktif, maka pilih status <strong>Pesanan Fiktif</strong> dan nomor pembeli akan diblokir oleh sistem</li>
                     </ol>
                 </div>
               </div>

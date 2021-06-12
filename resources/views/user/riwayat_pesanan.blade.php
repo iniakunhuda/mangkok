@@ -38,22 +38,23 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12 col-md-6">
-                                <h3 class="mb-0">
+                                <h3 class="mb-1">
                                     <a href="{{ route('home.detail_riwayat_pesanan', [$t['code']]) }}">Transaksi Nomor {{ $t['code'] }}</a>
                                 </h3>
-                            </div>
-                            <div class="col-12 col-md-6 text-start text-md-end">
                                 @if($t['status'] == "waiting")
-                                    <div class="badge bg-warning">Menunggu Konfirmasi Pedagang</div>
+                                    <div style="border-radius: 0" class="badge bg-warning">Menunggu Konfirmasi Pedagang</div>
                                 @elseif($t['status'] == "process")
-                                    <div class="badge bg-primary">Menerima Pesanan. Kunjungi lokasi pembeli</div>
+                                    <div style="border-radius: 0" class="badge bg-primary">Menerima Pesanan. Kunjungi lokasi pembeli</div>
                                 @elseif($t['status'] == "done")
-                                    <div class="badge bg-primary">Pesanan Selesai</div>
+                                    <div style="border-radius: 0" class="badge bg-primary">Pesanan Selesai</div>
                                 @else
-                                    <div class="badge bg-danger">Pesanan Dibatalkan</div>
+                                    <div style="border-radius: 0" class="badge bg-danger">Pesanan Dibatalkan</div>
                                 @endif
                             </div>
-                            <div class="col-12">
+                            <div class="col-12 col-md-6 text-start text-md-end">
+                                <h4>@currency($t['total'])</h4>
+                            </div>
+                            <div class="col-12 mt-1">
                                 <p class="merchant mb-0">{{ $t['buyer']['name'] }}</p>
                                 <p class="date mb-0">{{ \Carbon\Carbon::parse($t['date'])->format('d M Y') }}</p>
                             </div>

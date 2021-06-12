@@ -32,6 +32,8 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $id_merchant = \Auth::user()->merchant;
+        $data['pesanan'] = $this->transModel->getAll(['merchant._id' => $id_merchant]);
         $data['merchants'] = $this->__getGroupedMerchant();
         return view('user.home', $data);
     }

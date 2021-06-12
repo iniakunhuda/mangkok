@@ -125,7 +125,7 @@ class IndexController extends Controller
             'products' => $products,
             'total' => $total,
             'status' => 'waiting',
-            'note' => $req->note,
+            'note' => $req->catatan,
             'date' => \Carbon\Carbon::now()->timestamp
         ];
 
