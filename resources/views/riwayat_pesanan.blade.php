@@ -77,7 +77,7 @@ function getRiwayat() {
 
             data.forEach((r) => {
                 let div = $('#div__riwayat > .card').clone();
-                div.find('h3').find('a').text("Transaksi Nomor " + r.code)
+                div.find('h3').find('a').text("Transaksi " + r.code)
                 div.find('h3').find('a').attr("href", "/riwayat_pesanan/detail/" + r.code)
                 div.find('.merchant').text("Merchant : " + r.merchant.name)
                 div.find('.date').text( " Tanggal Transaksi : " + r.order_date)

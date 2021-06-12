@@ -39,7 +39,7 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <h3 class="mb-1">
-                                    <a href="{{ route('home.detail_riwayat_pesanan', [$t['code']]) }}">Transaksi Nomor {{ $t['code'] }}</a>
+                                    <a href="{{ route('home.detail_riwayat_pesanan', [$t['code']]) }}">Transaksi {{ $t['code'] }}</a>
                                 </h3>
                                 @if($t['status'] == "waiting")
                                     <div style="border-radius: 0" class="badge bg-warning">Menunggu Konfirmasi Pedagang</div>
