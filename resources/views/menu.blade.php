@@ -67,12 +67,14 @@
             @endforeach
 
             @if(count($products) < 1)
-            <div class="card" style="height:300px">
-                <div class="card-body text-center pt-5">
-                    <br>
-                    <br>
-                    <br>
-                    Produk tidak ditemukan. Silahkan untuk mencari produk yang lain
+            <div class="col-12 mt-2">
+                <div class="card" style="height:300px">
+                    <div class="card-body text-center pt-5">
+                        <br>
+                        <br>
+                        <br>
+                        Produk tidak ditemukan. Silahkan untuk mencari produk yang lain
+                    </div>
                 </div>
             </div>
             @endif
