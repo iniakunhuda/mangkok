@@ -43,36 +43,55 @@
     @yield('content')
 
     <!-- App Bottom Menu -->
+    @if(!\Auth::check())
     <div class="appBottomMenu">
-        <a href="{{ route('index') }}" class="item brown active">
+        <a href="{{ route('index') }}" class="item brown {{ request()->routeIs('index') ? 'active' : '' }}">
             <div class="col">
-                <ion-icon name="home"></ion-icon>
+                <ion-icon name="home-outline"></ion-icon>
                 <strong>Home</strong>
             </div>
         </a>
-        <a href="{{ route('menu') }}" class="item brown">
+        <a href="{{ route('menu') }}" class="item brown {{ (request()->routeIs('menu') || request()->routeIs('menu.detail')) ? 'active' : '' }}">
             <div class="col">
                 <ion-icon name="albums-outline"></ion-icon>
                 <strong>Cari Menu</strong>
             </div>
         </a>
-        <a href="{{ route('pesanan') }}" class="item brown">
+        <a href="{{ route('pesanan') }}" class="item brown {{ request()->routeIs('pesanan') ? 'active' : '' }}">
             <div class="col">
                 <ion-icon name="cart-outline"></ion-icon>
                 <span class="badge bg-warning total__cart hidden">1</span>
                 <strong>Pesanan</strong>
             </div>
         </a>
-        <a href="{{ route('riwayat_pesanan') }}" class="item brown">
+        <a href="{{ route('riwayat_pesanan') }}" class="item brown {{ (request()->routeIs('riwayat_pesanan') || request()->routeIs('detail_riwayat_pesanan')) ? 'active' : '' }}">
             <div class="col">
                 <ion-icon name="bag-check-outline"></ion-icon>
                 <strong>Riwayat Pesanan</strong>
             </div>
         </a>
     </div>
+    @endif
     <!-- * App Bottom Menu -->
 
-    @include('admin._sidebar')
+    @if(\Auth::check())
+    <div class="appBottomMenu">
+        <a href="{{ route('home') }}" class="item brown {{ request()->routeIs('home') ? 'active' : '' }}">
+            <div class="col">
+                <ion-icon name="home-outline"></ion-icon>
+                <strong>Home</strong>
+            </div>
+        </a>
+        <a href="{{ route('home.riwayat_pesanan') }}" class="item brown {{ (request()->routeIs('riwayat_pesanan') || request()->routeIs('detail_riwayat_pesanan')) ? 'active' : '' }}">
+            <div class="col">
+                <ion-icon name="bag-check-outline"></ion-icon>
+                <strong>Pesanan Pembeli</strong>
+            </div>
+        </a>
+    </div>
+    @endif
+
+    @include('_sidebar')
 
     <!-- ========= JS Files =========  -->
     <script src="{{url('')}}/assets/js/lib/bootstrap.bundle.min.js"></script>

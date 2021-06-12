@@ -172,6 +172,13 @@ class CartController extends Controller
             $resp[] = $trans;
         }
 
+        if(count($resp) > 0)
+        {
+            usort($resp, function($a, $b){
+                return strtotime($a['date']) - strtotime($b['date']);
+            });
+        }
+
         return response()->json([
             'status' => 200,
             'data' => $resp,

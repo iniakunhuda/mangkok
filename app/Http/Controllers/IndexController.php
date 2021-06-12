@@ -16,6 +16,7 @@ class IndexController extends Controller
 
     public function index() 
     {
+        if(\Auth::check()) return redirect()->route('home');
         $data['categories'] = Category::orderBy('name', 'ASC')->get();
         return view('index', $data);
     }
@@ -24,7 +25,18 @@ class IndexController extends Controller
     {
         $data['merchants'] = $this->__getGroupedMerchant();
         $data['categories'] = Category::orderBy('name', 'ASC')->get();
-        $data['products'] = Product::orderBy('name', 'ASC')->get();
+
+        $product = Product::orderBy('name', 'ASC');
+
+        if(isset($_GET['cat']) && ($_GET['cat'] != "")) {
+            $product->where('category', $_GET['cat']);
+        }
+
+        if(isset($_GET['q']) && ($_GET['q'] != "")) {
+            $product->where('name', 'like', '%' . $_GET['q'] . '%');
+        }
+
+        $data['products'] = $product->get();
         return view('menu', $data);
     }
 
@@ -52,10 +64,20 @@ class IndexController extends Controller
 
     public function riwayat_pesanan()
     {
-        $data['categories'] = Category::orderBy('name', 'ASC')->get();
         $data['merchants'] = $this->__getGroupedMerchant();
         $data['carts'] = [];
         return view('riwayat_pesanan', $data);
+    }
+
+    public function detail_riwayat_pesanan($code)
+    {
+        $data['pesanan'] = $this->transModel->getOne(['code' => $code]);
+        if(!$data['pesanan']) abort(404);
+
+        $data['products'] = $this->__getGroupedProduct();
+        $data['merchants'] = $this->__getGroupedMerchant();
+        $data['carts'] = [];
+        return view('detail_riwayat_pesanan', $data);
     }
 
     public function checkout(Request $req)
@@ -68,7 +90,9 @@ class IndexController extends Controller
         $buyer = [
             'name' => $req->nama,
             'address' => $req->alamat,
-            'telp' => $req->telp
+            'telp' => $req->telp,
+            'ip' => request()->ip(),
+            'user_agent' => $this->_getUserAgent()
         ];
 
         $merchant = [
@@ -180,5 +204,63 @@ Kode Transaksi {$trans['code']}
         } else {
             return true;
         }
+    }
+
+    
+
+    private function _getUserAgent()
+    {
+        $user_agent = \request()->header('User-Agent');
+        $bname = 'Unknown';
+        $platform = 'Unknown';
+
+        //First get the platform?
+        if (preg_match('/linux/i', $user_agent)) {
+            $platform = 'linux';
+        }
+        elseif (preg_match('/macintosh|mac os x/i', $user_agent)) {
+            $platform = 'mac';
+        }
+        elseif (preg_match('/windows|win32/i', $user_agent)) {
+            $platform = 'windows';
+        }
+
+
+        // Next get the name of the useragent yes seperately and for good reason
+        if(preg_match('/MSIE/i',$user_agent) && !preg_match('/Opera/i',$user_agent))
+        {
+            $bname = 'Internet Explorer';
+            $ub = "MSIE";
+        }
+        elseif(preg_match('/Firefox/i',$user_agent))
+        {
+            $bname = 'Mozilla Firefox';
+            $ub = "Firefox";
+        }
+        elseif(preg_match('/Chrome/i',$user_agent))
+        {
+            $bname = 'Google Chrome';
+            $ub = "Chrome";
+        }
+        elseif(preg_match('/Safari/i',$user_agent))
+        {
+            $bname = 'Apple Safari';
+            $ub = "Safari";
+        }
+        elseif(preg_match('/Opera/i',$user_agent))
+        {
+            $bname = 'Opera';
+            $ub = "Opera";
+        }
+        elseif(preg_match('/Netscape/i',$user_agent))
+        {
+            $bname = 'Netscape';
+            $ub = "Netscape";
+        } else {
+            $bname = "Don't Know";
+            $ub = "Don't Know";
+        }
+
+        return $bname;
     }
 }

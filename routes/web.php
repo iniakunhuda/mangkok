@@ -30,11 +30,15 @@ Route::get('/menu/detail/{id}', [IndexController::class, 'menuDetail'])->name('m
 Route::get('/pesanan', [IndexController::class, 'pesanan'])->name('pesanan');
 Route::get('/tentang', [IndexController::class, 'tentang'])->name('tentang');
 Route::get('/riwayat_pesanan', [IndexController::class, 'riwayat_pesanan'])->name('riwayat_pesanan');
+Route::get('/riwayat_pesanan/detail/{code}', [IndexController::class, 'detail_riwayat_pesanan'])->name('detail_riwayat_pesanan');
 Route::post('/checkout', [IndexController::class, 'checkout'])->name('checkout');
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home/riwayat_pesanan', [App\Http\Controllers\HomeController::class, 'riwayat_pesanan'])->name('home.riwayat_pesanan');
+Route::get('/home/riwayat_pesanan/detail/{code}', [App\Http\Controllers\HomeController::class, 'detail_riwayat_pesanan'])->name('home.detail_riwayat_pesanan');
+Route::post('/home/riwayat_pesanan/update/{code}', [App\Http\Controllers\HomeController::class, 'update_pesanan'])->name('home.update_pesanan');
 
 Route::group(['prefix' => 'merchant', 'as' => 'merchant.'], function() {
     Route::get('login', [AdminAuthController::class, 'getLogin'])->name('login');

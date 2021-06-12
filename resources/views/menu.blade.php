@@ -13,14 +13,16 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="boxed">
-                            <select name="" id="" class="form-control mb-2">
-                                <option>Pilih Kategori</option>
-                                @foreach($categories as $cat)
-                                <option value="{{ $cat->_id }}">{{ $cat->name }}</option>
-                                @endforeach
-                            </select>
-                            <input class="form-control mb-2" type="text" placeholder="Cari Makanan / Minuman">
-                            <button class="btn btn-dark btn-block">Cari Menu</button>
+                            <form action="{{ route('menu') }}" method="GET">
+                                <select name="cat" id="" class="form-control mb-2">
+                                    <option value="">Pilih Kategori</option>
+                                    @foreach($categories as $cat)
+                                    <option value="{{ $cat->_id }}" {{ (isset($_GET['cat']) && ($_GET['cat'] == $cat->_id)) ? 'selected' : '' }}>{{ $cat->name }}</option>
+                                    @endforeach
+                                </select>
+                                <input class="form-control mb-2" name="q" value="{{ $_GET['q'] ?? '' }}" type="text" placeholder="Cari Makanan / Minuman">
+                                <button class="btn btn-dark btn-block">Cari Menu</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -29,7 +31,11 @@
     </div>
 
     <div class="section pt-1 mt-5">
-        <h3>Hasil Pencarian</h3>
+        <h3>Hasil Pencarian
+            @if(isset($_GET['q']) && ($_GET['q'] != ""))
+                dari <span style="font-size:17px" class="text-muted">{{ $_GET['q'] }}</span>
+            @endif
+        </h3>
         <div class="row">
             @foreach($products as $prod)
             <div class="col-12 mt-2">
@@ -59,6 +65,17 @@
                 </div>
             </div>
             @endforeach
+
+            @if(count($products) < 1)
+            <div class="card" style="height:300px">
+                <div class="card-body text-center pt-5">
+                    <br>
+                    <br>
+                    <br>
+                    Produk tidak ditemukan. Silahkan untuk mencari produk yang lain
+                </div>
+            </div>
+            @endif
         </div>
     </div>
 

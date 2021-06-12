@@ -1,71 +1,64 @@
-@extends('layout', ['show_footer' => false])
+@extends('layout')
+
+@section('title')
+    Mangkok
+@endsection
 
 @section('content')
-<div class="ps-breadcrumb">
-    <div class="container">
-        <ul class="ps-breadcrumb__list">
-            <li class="active"><a href="{{ url('/') }}">Home</a></li>
-            <li><a href="javascript:void(0);">Login</a></li>
-        </ul>
+<div id="appCapsule">
+
+    <div class="section mt-5 text-center">
+        <h1>Login Pedagang</h1>
+        <h4>Silahkan masukkan detail akun Anda</h4>
     </div>
+    <div class="section mb-5 p-2">
+
+        <form action="" method="post">
+            {{ csrf_field() }}
+            <div class="card">
+                <div class="card-body pb-1">
+                    <div class="form-group basic">
+                        <div class="input-wrapper">
+                            <label class="label" for="telp">Nomor Telp</label>
+                            <input type="text" autocomplete="new-password" class="form-control" name="telp" id="telp" placeholder="+628xxx">
+                            <i class="clear-input">
+                                <ion-icon name="close-circle"></ion-icon>
+                            </i>
+                        </div>
+                    </div>
+
+                    <div class="form-group basic">
+                        <div class="input-wrapper">
+                            <label class="label" for="password1">Password</label>
+                            <input type="password" class="form-control" name="password" id="password1" autocomplete="new-password"
+                                placeholder="Password">
+                            <i class="clear-input">
+                                <ion-icon name="close-circle"></ion-icon>
+                            </i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            @if(\Session::get('success'))
+                <div class="alert mt-3 alert-success" role="alert">
+                    {{ \Session::get('success') }}
+                </div>
+            @endif
+            @if(\Session::get('error'))
+                <div class="alert mt-3 alert-danger" role="alert">
+                    {{ \Session::get('error') }}
+                </div>
+            @endif 
+
+            <div class="mt-5">
+                <button type="submit" class="btn btn-primary btn-block btn-lg">Masuk ke Platform Pedagang</button>
+            </div>
+
+        </form>
+    </div>
+
 </div>
-<section class="section--login">
-    <div class="container">
-        <div class="row">
-            <div class="col-12 col-lg-6">
-                <div class="login__box">
-                    <div class="login__header">
-                        <h3 class="login__login"><a href="{{ url('login') }}">MASUK</a></h3>
-                        <h3 class="login__register"><a href="{{ url('register') }}">DAFTAR</a></h3>
-                    </div>
-                    <div class="login__content">
-                        
-                        <form method="POST" action="{{ route('login') }}">
-                            @csrf
-                            <div class="login__label">Masuk ke akun Anda.</div>
-                            <label>Email</label><br>
-                            <div class="input-group">
-                                <input class="form-control" name="email" type="email" placeholder="Email">
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                            <label>Password</label><br>
-                            <div class="input-group group-password">
-                                <input class="form-control" name="password" type="password" placeholder="Password">
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                            <div class="input-group form-check">
-                                <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                <label class="form-check-label" for="remember">
-                                    Ingat Saya
-                                </label>
-                            </div>
-                            <div class="input-group">
-                                <button type="submit" class="btn btn-login">
-                                    {{ __('Login') }}
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-lg-6">
-                <h3 class="login__title">Login untuk menggunakan website Kampung Kue</h3>
-                <p class="login__description"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto, iusto? Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur fugit nemo dolore molestias non? Consequuntur recusandae ut rerum reprehenderit similique. </p>
-                <div class="login__orther">
-                    <p> <i class="icon-truck"></i>Order Kue Cepat & Berkualitas</p>
-                    <p> <i class="icon-alarm2"></i>Pilih order kapan saja</p>
-                    <p><i class="icon-star"></i>Banyak pilihan toko kue terbaik</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 @endsection
