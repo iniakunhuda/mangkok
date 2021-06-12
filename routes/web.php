@@ -25,44 +25,17 @@ use App\Http\Controllers\ProductController;
 */
 
 Route::get('/', [IndexController::class, 'index'])->name('index');
-Route::get('/tentang-kami', [IndexController::class, 'tentangKami'])->name('about');
-Route::get('/produk', [ProductController::class, 'index'])->name('product.index');
-Route::get('/produk/detail/{slug}', [ProductController::class, 'detail'])->name('product.detail');
-Route::get('/unitdagang', [MerchantController::class, 'index'])->name('merchant.index');
-Route::get('/unitdagang/detail/{code}', [MerchantController::class, 'detail'])->name('merchant.detail');
-Route::get('/kontak', [IndexController::class, 'kontak'])->name('contact');
-
-Route::group(['prefix' => 'galeri', 'as' => 'gallery.'], function() {
-    Route::get('/', [GalleryController::class, 'index'])->name('index');
-    Route::get('/detail/{slug}', [GalleryController::class, 'detail'])->name('detail');
-});
-
-Route::group(['prefix' => 'cart', 'as' => 'cart.'], function() {
-    Route::get('/view', [IndexController::class, 'cartView'])->name('view');
-    Route::get('/checkout', [IndexController::class, 'cartCheckout'])->name('checkout');
-});
+Route::get('/menu', [IndexController::class, 'menu'])->name('menu');
+Route::get('/menu/detail/{id}', [IndexController::class, 'menuDetail'])->name('menu.detail');
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
+Route::group(['prefix' => 'merchant', 'as' => 'merchant.'], function() {
     Route::get('login', [AdminAuthController::class, 'getLogin'])->name('login');
     Route::post('login', [AdminAuthController::class, 'postLogin'])->name('login.post');
     Route::get('logout', [AdminAuthController::class, 'logout'])->name('logout');
     Route::get('/home', [AdminController::class, 'index'])->name('home');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::resource('categories', CategoryController::class);
-    Route::resource('merchants', AdminMerchantController::class);
-    Route::resource('products', AdminProductController::class);
-
-    Route::group(['prefix' => 'products/photo', 'as' => 'products.photo.'], function() {
-        Route::get('index', [AdminProductController::class, 'photoIndex'])->name('index');
-        Route::get('create', [AdminProductController::class, 'photoCreate'])->name('create');
-        Route::post('store', [AdminProductController::class, 'photoStore'])->name('store');
-        Route::get('edit/{photo}', [AdminProductController::class, 'photoEdit'])->name('index');
-        Route::put('update/{photo}', [AdminProductController::class, 'photoUpdate'])->name('update');
-        Route::delete('destroy/{photo}', [AdminProductController::class, 'photoDestroy'])->name('destroy');
-    });
-
 });

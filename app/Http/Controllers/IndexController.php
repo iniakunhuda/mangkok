@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Category;
 use App\Models\Merchant;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -12,23 +13,29 @@ use Illuminate\Support\Facades\Session;
 class IndexController extends Controller
 {
 
-    // $data = [
-    //     'name' => 'Superadmin',
-    //     'telp' => '08111',
-    //     'otp' => '12345',
-    //     'password' => Hash::make('admin123456'),
-    //     'otp_inactive' => null,
-    //     'role' => 'superadmin',
-    //     'last_login' => new \MongoDB\BSON\UTCDateTime(new \DateTime())
-    // ];
-
-    // $admin = new Admin;
-    // $admin->save($data);
-
     public function index() 
     {
-        $data['merchants'] = Merchant::limit(5)->get();
+        $data['categories'] = Category::orderBy('name', 'ASC')->get();
         return view('index', $data);
+    }
+
+    public function menu() 
+    {
+        $data['categories'] = Category::orderBy('name', 'ASC')->get();
+        $data['products'] = Product::orderBy('name', 'ASC')->get();
+        return view('menu', $data);
+    }
+
+    public function menuDetail($id) 
+    {
+        $data['merchant'] = $this->merchantModel->getOne(['_id' => $id]);
+        if(!$data['merchant']) abort(404);
+
+        $data['categories'] = Category::orderBy('name', 'ASC')->get();
+        $data['products'] = Product::where('merchant', $id)
+                                        ->orderBy('name', 'ASC')
+                                        ->get();
+        return view('menu_detail', $data);
     }
 
     public function cartView()
@@ -54,15 +61,5 @@ class IndexController extends Controller
             ]
         ];
         return view('user.cart.checkout', $data);
-    }
-
-    public function tentangKami() 
-    {
-        return view('about');
-    }
-
-    public function kontak() 
-    {
-        return view('contact');
     }
 }

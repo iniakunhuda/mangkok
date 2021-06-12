@@ -9,7 +9,7 @@ use App\Models\Product;
 class Category extends BaseModel
 {
 	protected $connection = 'mongodb';
-    protected $collection = 'category';
+    protected $collection = 'categories';
 
     protected $guarded = [];
 
