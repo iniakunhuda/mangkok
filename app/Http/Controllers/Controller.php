@@ -9,6 +9,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use App\Models\Merchant;
 use App\Models\Product;
+use App\Models\Transaction;
 
 class Controller extends BaseController
 {
@@ -21,6 +22,7 @@ class Controller extends BaseController
         $this->productModel = new Product;
         $this->merchantModel = new Merchant;
         $this->categoryModel = new Category;
+        $this->transModel = new Transaction;
     }
 
     public function __getGroupedMerchant()
@@ -32,5 +34,16 @@ class Controller extends BaseController
         }
 
         return $_merchant;
+    }
+
+    public function __getGroupedProduct()
+    {
+        $products = Product::get()->toArray();
+        $_product = [];
+        foreach((array) $products as $m) {
+            $_product[$m['_id']] = $m;
+        }
+
+        return $_product;
     }
 }

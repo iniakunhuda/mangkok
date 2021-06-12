@@ -27,6 +27,10 @@ use App\Http\Controllers\ProductController;
 Route::get('/', [IndexController::class, 'index'])->name('index');
 Route::get('/menu', [IndexController::class, 'menu'])->name('menu');
 Route::get('/menu/detail/{id}', [IndexController::class, 'menuDetail'])->name('menu.detail');
+Route::get('/pesanan', [IndexController::class, 'pesanan'])->name('pesanan');
+Route::get('/tentang', [IndexController::class, 'tentang'])->name('tentang');
+Route::get('/riwayat_pesanan', [IndexController::class, 'riwayat_pesanan'])->name('riwayat_pesanan');
+Route::post('/checkout', [IndexController::class, 'checkout'])->name('checkout');
 
 Auth::routes();
 

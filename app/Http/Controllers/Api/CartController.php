@@ -36,21 +36,32 @@ class CartController extends Controller
         }
 
         $cart = Session::get('cart');
-        if(!$cart) {
+        if(!$cart || !(isset($cart[$id]))) {
             $merchants = $this->__getGroupedMerchant();
-            $cart = [
-                    $id => [
-                        'id' => $id,
-                        'image' => $product->images[0]['url'], 
-                        'slug' => $product->slug, 
-                        'title' => $product->name, 
-                        'price' => $product->price['discount_price'],
-                        'qty' => $qty, 
-                        'total' => $product->price['discount_price'] * $qty, 
-                        'merchant' => $merchants[$product->merchant]['name']
-                    ]
+
+            // 1 invoice = 1 merchant
+            if(isset($cart)) {
+                $cart_arr = (array) array_values($cart);
+                $last_merchant = $cart_arr[0]['merchant']['_id'];
+                if($last_merchant != $merchants[$product->merchant]['_id']) {
+                    return response()->json([
+                        'status' => 404,
+                        'message' => 'Selesaikan pesanan untuk merchant ' . $cart_arr[0]['merchant']['name'] . ' di menu Pesanan'
+                    ]);
+                }
+            }
+
+
+            $cart[$id] = [
+                'id' => $id,
+                'image' => $product->pict, 
+                'title' => $product->name, 
+                'price' => $product->price,
+                'qty' => $qty, 
+                'total' => $product->price * $qty, 
+                'merchant' => $merchants[$product->merchant]
             ];
-            Session::put('cart', $cart);
+            Session::put('cart', (array) $cart);
             return response()->json([
                 'status' => 200,
                 'message' => 'Sukses menambah produk ke keranjang!'
@@ -59,7 +70,7 @@ class CartController extends Controller
 
         if(isset($cart[$id])) {
             $cart[$id]['qty'] += $qty;
-            $cart[$id]['total'] = $product->price['discount_price'] * $cart[$id]['qty'];
+            $cart[$id]['total'] = $product->price * $cart[$id]['qty'];
             Session::put('cart', $cart);
             return response()->json([
                 'status' => 200,
@@ -67,6 +78,35 @@ class CartController extends Controller
             ]);
         }
 
+    }
+
+    public function change_qty(Request $req, $id)
+    {
+        $product = $this->productModel->getOne(['_id' => $id]);
+        if(!$product) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Gagal! Produk tidak ditemukan. Silahkan reload ulang halaman'
+            ]);
+        }
+
+        $cart = Session::get('cart');
+        $qty = $req->qty;
+
+        if(isset($cart[$id])) {
+            $cart[$id]['qty'] = $qty;
+            $cart[$id]['total'] = $product->price * $cart[$id]['qty'];
+            Session::put('cart', $cart);
+            return response()->json([
+                'status' => 200,
+                'message' => 'Sukses merubah total produk di keranjang!'
+            ]);
+        }
+
+        return response()->json([
+            'status' => 404,
+            'message' => 'Gagal! Produk tidak ditemukan. Tambahkan dulu produknya'
+        ]);
     }
 
     public function remove(Request $req, $id)
@@ -101,6 +141,16 @@ class CartController extends Controller
         return (!is_null($cart)) ? count($cart) : 0;
     }
 
+    public function total_bayar()
+    {
+        $total = 0;
+        $cart = Session::get('cart');
+        foreach((array) $cart as $ct) {
+            $total += $ct['total'];
+        }
+        return $total;
+    }
+
     public function destroy()
     {
         Session::forget('cart');
@@ -109,4 +159,24 @@ class CartController extends Controller
             'message' => 'Berhasil mengosongkan keranjang belanja!'
         ]);
     }
+
+    public function riwayat_pesanan(Request $req)
+    {
+        $data = json_decode($req->data, true);
+        $resp = [];
+        foreach((array) $data as $dt) {
+            $trans = $this->transModel->getOne(['_id' => $dt['_id']]);
+            if(!$trans) continue;
+
+            $trans['order_date'] = \Carbon\Carbon::parse($trans['date'])->format('d M Y');
+            $resp[] = $trans;
+        }
+
+        return response()->json([
+            'status' => 200,
+            'data' => $resp,
+            'message' => 'Berhasil mengosongkan keranjang belanja!'
+        ]);
+    }
+
 }

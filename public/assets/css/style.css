@@ -5496,3 +5496,6 @@ body.dark-mode .android-add-to-home .modal-content .action-sheet-content {
     cursor: pointer;
     cursor: hand;
 }
+.hidden {
+    display: none;
+}

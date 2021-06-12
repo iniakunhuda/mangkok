@@ -7,14 +7,18 @@
 @section('content')
 <div id="appCapsule">
 
+
+    @if($merchant->banner != "")
     <div class="section pt-1 mt-5" style="padding: 0;">
         <img style="margin-top: -50px;" class="img-fluid" src="{{ $merchant->banner }}" alt="">
     </div>
+    @endif
+
     <div class="section mt-5">
         <div class="card">
             <div class="card-body">
                 <h1 class="mt-2">{{ $merchant->name }}</h1>
-                <p>{{ $merchant->telp }}</p>
+                <p>{{ $merchant->desc }}</p>
                 
                 <select class="rating-stars">
                     <option value=""></option>
@@ -24,9 +28,6 @@
                     <option value="4"  {{ ($merchant->rating == 4) ? 'selected' : '' }}>4</option>
                     <option value="5" {{ ($merchant->rating == 5) ? 'selected' : '' }}>5</option>
                 </select>
-                <span>
-                    ( {{count($merchant->reviews)}} )
-                </span>
             </div>
         </div>
     </div>
@@ -36,16 +37,17 @@
         <div class="row">
             @foreach($products as $prod)
             <div class="col-12 mt-2">
-                <div class="card hand" onclick="window.location.href = '{{ route('menu.detail', [$prod->merchant]) }}'">
+                <div class="card hand">
                     <div class="row">
-                        <div class="col-12 col-md-2">
+                        <div class="col-12 col-md-3">
                             <img src="{{ ($prod->pict != "") ? $prod->pict : url('images/logo.png') }}" alt="{{ $prod->name }}" style="
                                 object-fit: cover;
                                 width: 100%;
                                 height: 100%;">
                         </div>
-                        <div class="col-12 col-md-10">
+                        <div class="col-12 col-md-9">
                             <div class="card-body">
+                                <a href="{{ route('menu.detail', [$prod->merchant]) }}">{{ $merchants[$prod->merchant]['name'] }}</a>
                                 <h3 class="mb-0">{{ $prod->name }}</h3>
                                 <small>@currency($prod->price)</small>
                                 
@@ -55,7 +57,7 @@
                                 
                                 <small class="mt-2">Jumlah Pembelian</small>
                                 <input class="form-control mb-2" name="product[{{$prod->_id}}]" value="1" type="number" min="1" />
-                                <button type="button" class="btn btn-primary btn-block"  onclick="addToCartProduct('{{$prod->_id}}', this)">Tambah ke pesanan</button>
+                                <a href="javascript:void(0)" class="btn btn-primary btn-block" onclick="addToCartProduct('{{$prod->_id}}', this)">Tambah ke pesanan</a>
                             </div>
                         </div>
                     </div>
@@ -78,13 +80,9 @@
 
 @push('js')
 <script>
-$(document).ready(function(){
-
-    const addToCartProduct = (id, that) => {
-        var qty = $(that).parent().find('input[type="number"]').val();
-        addToCart(id, qty);
-    }
-
-});
+function addToCartProduct(id, that) {
+    var qty = $(that).parent().find('input[type="number"]').val();
+    addToCart(id, qty);
+}
 </script>
 @endpush

@@ -16,7 +16,7 @@
                             <select name="" id="" class="form-control mb-2">
                                 <option>Pilih Kategori</option>
                                 @foreach($categories as $cat)
-                                <option value=""></option>
+                                <option value="{{ $cat->_id }}">{{ $cat->name }}</option>
                                 @endforeach
                             </select>
                             <input class="form-control mb-2" type="text" placeholder="Cari Makanan / Minuman">
@@ -33,17 +33,18 @@
         <div class="row">
             @foreach($products as $prod)
             <div class="col-12 mt-2">
-                <div class="card hand" onclick="window.location.href = '{{ route('menu.detail', [$prod->merchant]) }}'">
+                <div class="card hand">
                     <div class="row">
-                        <div class="col-12 col-md-2">
+                        <div class="col-12 col-md-3" onclick="window.location.href = '{{ route('menu.detail', [$prod->merchant]) }}'">
                             <img src="{{ ($prod->pict != "") ? $prod->pict : url('images/logo.png') }}" alt="{{ $prod->name }}" style="
                                 object-fit: cover;
                                 width: 100%;
                                 height: 100%;">
                         </div>
-                        <div class="col-12 col-md-10">
+                        <div class="col-12 col-md-9">
                             <div class="card-body">
-                                <h3 class="mb-0">{{ $prod->name }}</h3>
+                                <a href="{{ route('menu.detail', [$prod->merchant]) }}">{{ $merchants[$prod->merchant]['name'] }}</a>
+                                <h2 class="mb-0" onclick="window.location.href = '{{ route('menu.detail', [$prod->merchant]) }}'">{{ $prod->name }}</h2>
                                 <small>@currency($prod->price)</small>
                                 <p class="mt-2">
                                     {{ $prod->desc }}
@@ -51,7 +52,7 @@
                                 
                                 <small class="mt-2">Jumlah Pembelian</small>
                                 <input class="form-control mb-2" name="product[{{$prod->_id}}]" value="1" type="number" min="1" />
-                                <button class="btn btn-primary btn-block">Tambah ke pesanan</button>
+                                <a href="javascript:void(0)" class="btn btn-primary btn-block" onclick="addToCartProduct('{{$prod->_id}}', this)">Tambah ke pesanan</a>
                             </div>
                         </div>
                     </div>
@@ -74,7 +75,9 @@
 
 @push('js')
 <script>
-$(document).ready(function(){
-});
+    function addToCartProduct(id, that) {
+        var qty = $(that).parent().find('input[type="number"]').val();
+        addToCart(id, qty);
+    }
 </script>
 @endpush

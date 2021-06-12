@@ -29,7 +29,9 @@
             </a>
         </div>
         <div class="pageTitle">
-            <h3 class="mt-1" style="color:#FFF">Mangkok</h3>
+            <h3 class="mt-1" style="color:#FFF">
+                <a style="color:#FFF" href="{{ url('/') }}">Mangkok</a>
+            </h3>
         </div>
         {{-- <div class="right">
             <a href="{{ route('merchant.logout') }}" class="headerButton">
@@ -54,16 +56,17 @@
                 <strong>Cari Menu</strong>
             </div>
         </a>
-        <a href="app-components.html" class="item brown">
+        <a href="{{ route('pesanan') }}" class="item brown">
             <div class="col">
                 <ion-icon name="cart-outline"></ion-icon>
+                <span class="badge bg-warning total__cart hidden">1</span>
                 <strong>Pesanan</strong>
             </div>
         </a>
-        <a href="app-cards.html" class="item brown">
+        <a href="{{ route('riwayat_pesanan') }}" class="item brown">
             <div class="col">
-                <ion-icon name="information-circle-outline"></ion-icon>
-                <strong>Tentang</strong>
+                <ion-icon name="bag-check-outline"></ion-icon>
+                <strong>Riwayat Pesanan</strong>
             </div>
         </a>
     </div>
@@ -80,7 +83,13 @@
     <script src="{{ url('plugins/datatables/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{url('/')}}/plugins/jquery-bar-rating/dist/jquery.barrating.min.js"></script>
     <script src="{{url('/')}}/plugins/select2/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="{{ url('assets/js/main.js') }}"></script>
+    <script>
+        const BASE_URL = "{{ url('/') }}";
+        const API_VERSION = "v1";
+        const API_URL  = BASE_URL + "/api/" + API_VERSION + "/";
+    </script>
     <script src="{{ url('assets/js/cart.js') }}"></script>
     @include('sweet::alert')
     <script>
