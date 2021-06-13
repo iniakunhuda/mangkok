@@ -7,11 +7,11 @@
 @section('content')
 <div id="appCapsule">
 
-    <div class="section mt-5 pt-1">
+    {{-- <div class="section mt-5 pt-1">
         <div class="owl-carousel">
             <div>Banner</div>
         </div>
-    </div>
+    </div> --}}
 
     <div class="section mt-3 pt-1">
         <div class="row">
