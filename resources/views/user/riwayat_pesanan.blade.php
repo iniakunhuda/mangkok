@@ -42,19 +42,19 @@
                                     <a href="{{ route('home.detail_riwayat_pesanan', [$t['code']]) }}">Transaksi {{ $t['code'] }}</a>
                                 </h3>
                                 @if($t['status'] == "waiting")
-                                    <div style="border-radius: 0" class="badge bg-warning">Menunggu Konfirmasi Pedagang</div>
+                                    <div style="border-radius: 0" class="badge mb-1 bg-warning">Menunggu Konfirmasi Pedagang</div>
                                 @elseif($t['status'] == "process")
-                                    <div style="border-radius: 0" class="badge bg-primary">Menerima Pesanan. Kunjungi lokasi pembeli</div>
+                                    <div style="border-radius: 0" class="badge mb-1 bg-primary">Menerima Pesanan. Kunjungi lokasi pembeli</div>
                                 @elseif($t['status'] == "done")
-                                    <div style="border-radius: 0" class="badge bg-primary">Pesanan Selesai</div>
+                                    <div style="border-radius: 0" class="badge mb-1 bg-primary">Pesanan Selesai</div>
                                 @else
-                                    <div style="border-radius: 0" class="badge bg-danger">Pesanan Dibatalkan</div>
+                                    <div style="border-radius: 0" class="badge mb-1 bg-danger">Pesanan Dibatalkan</div>
                                 @endif
                             </div>
                             <div class="col-12 col-md-6 text-start text-md-end">
                                 <h4>@currency($t['total'])</h4>
                             </div>
-                            <div class="col-12 mt-1">
+                            <div class="col-12">
                                 <p class="merchant mb-0">{{ $t['buyer']['name'] }}</p>
                                 <p class="date mb-0">{{ \Carbon\Carbon::parse($t['date'])->format('d M Y') }}</p>
                             </div>
